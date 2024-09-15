@@ -1,0 +1,23 @@
+﻿@model BowlingAlley.Models.BookingSlots
+
+<h2>Book Slot</h2>
+
+<form asp-action="ConfirmBooking" method="post">
+    <div>
+        <label>Slot ID</label>
+        <input type="text" value="@Model.SlotId" readonly />
+    </div>
+    <div>
+        <label>Slot Start Time</label>
+        <input type="text" value="@Model.SlotStartTime" readonly />
+    </div>
+    <div>
+        <label>Slot End Time</label>
+        <input type="text" value="@Model.SlotEndTime" readonly />
+    </div>
+    <div>
+        <label>Employee ID</label>
+        <input type="number" name="EmpId" required />
+    </div>
+    <button type="submit">Confirm Booking</button>
+</form>
