@@ -1,36 +1,69 @@
-﻿using BowlingAlley.Models;
+﻿using Azure;
+using BowlingAlley.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace BowlingAlley
 {
     public class BowlingAlleyRepository : IBowlingAlleyRepository
     {
         private readonly BowlingAlleyDBContext _context;
+        private readonly ILogger<BowlingAlleyRepository> _logger;
 
-        public BowlingAlleyRepository(BowlingAlleyDBContext context)
+        public BowlingAlleyRepository(BowlingAlleyDBContext context, ILogger<BowlingAlleyRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
-        public int BookSlots(int SlotId, int EmpId)
+
+        public int BookSlots(int SlotId, int EmpId, string CustomerName)
         {
             var slot = _context.BookingSlots.FirstOrDefault(s => s.SlotId == SlotId);
+
             if (slot != null)
             {
-                var reservation = new Reservations
-                {
-                    SlotId = SlotId,
-                    ReservedBy = EmpId,
-                    ReservedOn = DateTime.Now,
-                    Status = 1
-                };
+                    slot.SlotId, slot.SlotStartTime, slot.SlotEndTime);
+            }
+            else
+            {
+                return 0;
+            }
+
+            var isSlotReserved = _context.Reservations.Any(r => r.SlotId == SlotId);
+
+
+            if (isSlotReserved)
+            {
+                return 0;
+            }
+
+            var reservation = new Reservations
+            {
+                SlotId = SlotId,
+                ReservedBy = EmpId,
+                ReservedOn = DateTime.Now,
+                Status = 1,
+                CustomerName = CustomerName
+            };
+
+            try
+            {
                 _context.Reservations.Add(reservation);
                 _context.SaveChanges();
+
                 return reservation.ReservationId;
             }
-            return 0;
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
+
+
+
+
 
         public string GetAdminName(int role)
         {
@@ -47,6 +80,7 @@ namespace BowlingAlley
         {
             return _context.BookingSlots.ToList();
         }
+
         public List<Reservations> GetReservationDetails()
         {
             return _context.Reservations
@@ -61,11 +95,10 @@ namespace BowlingAlley
                 })
                 .ToList();
         }
-        public List<BookingSlots> AvailableSlots(DateTime dt)
+
+        public List<BookingSlots> AvailableSlots(DateTime date)
         {
-            return _context.BookingSlots
-                .Where(slot => !slot.Reservations.Any())
-                .ToList();
+            return _context.BookingSlots.ToList();
         }
     }
 }

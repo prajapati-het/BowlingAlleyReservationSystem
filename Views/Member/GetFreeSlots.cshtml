@@ -3,6 +3,7 @@
 <div class="container">
     <h2>Free Slots</h2>
     <p>Type of User: <strong>Member</strong></p>
+    
 
     <table class="table table-striped">
         <thead>
@@ -16,14 +17,20 @@
         <tbody>
             @foreach (var slot in Model)
             {
-                <tr>
-                    <td>@slot.SlotId</td>
-                    <td>@slot.SlotStartTime.ToString()</td>
-                    <td>@slot.SlotEndTime.ToString()</td>
-                    <td>
-                        <a href="@Url.Action("BookSlots", "Member", new { SlotId = slot.SlotId })" class="btn btn-link">Book Slot</a>
-                    </td>
-                </tr>
+                { 
+                    if (slot.SlotEndTime > DateTime.Now.TimeOfDay)
+                    {
+                        <tr>
+                            <td>@slot.SlotId</td>
+                            <td>@slot.SlotStartTime.ToString()</td>
+                            <td>@slot.SlotEndTime.ToString()</td>
+                            <td>
+                                <a href="@Url.Action("BookSlots", "Member", new { SlotId = slot.SlotId })" class="btn btn-link">Book Slot</a>
+                            </td>
+                        </tr>
+                    } 
+                }
+
             }
         </tbody>
     </table>

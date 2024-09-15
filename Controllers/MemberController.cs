@@ -16,7 +16,7 @@ namespace BowlingAlley.Controllers
 
         public IActionResult GetFreeSlots()
         {
-            var freeSlots = _bowlingAlleyRepository.AvailableSlots(DateTime.Today);
+            var freeSlots = _bowlingAlleyRepository.AvailableSlots(new DateTime());
             return View(freeSlots);
         }
 
@@ -35,16 +35,16 @@ namespace BowlingAlley.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConfirmBooking(int SlotId, int EmpId)
+        public IActionResult ConfirmBooking(int SlotId, int EmpId, string CustomerName)
         {
-            if (EmpId == 0)
+            if (EmpId == 0 || string.IsNullOrEmpty(CustomerName))
             {
                 return RedirectToAction("Exception");
             }
 
             try
             {
-                int reservationId = _bowlingAlleyRepository.BookSlots(SlotId, EmpId);
+                int reservationId = _bowlingAlleyRepository.BookSlots(SlotId, EmpId, CustomerName);
 
                 if (reservationId > 0)
                 {
@@ -53,11 +53,13 @@ namespace BowlingAlley.Controllers
 
                 return RedirectToAction("Exception");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return RedirectToAction("Exception");
             }
         }
+
+
 
         public IActionResult Success()
         {

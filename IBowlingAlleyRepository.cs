@@ -6,7 +6,7 @@ namespace BowlingAlley
 {
     public interface IBowlingAlleyRepository
     {
-        public int BookSlots(int Slotid, int Empid);
+        public int BookSlots(int Slotid, int Empid, string CustomerName);
 
         //public     GetRejectedSlots();
 
