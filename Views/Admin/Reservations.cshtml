@@ -21,7 +21,7 @@
                 <td>@reservation.SlotId</td>
                 <td>
                     <a href="@Url.Action("Approve", "Admin", new { reservationId = reservation.ReservationId })">Approve</a> |
-                    <a href="@Url.Action("Reject", "Admin", new { reservationId = reservation.ReservationId })">Reject</a>
+                    <a href="@Url.Action("Reject", "Admin", new { reservationId = reservation.ReservationId })">Reject</a> 
                 </td>
             </tr>
         }
