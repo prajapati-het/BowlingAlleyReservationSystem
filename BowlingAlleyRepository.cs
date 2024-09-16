@@ -20,24 +20,10 @@ namespace BowlingAlley
 
         public int BookSlots(int SlotId, int EmpId, string CustomerName)
         {
+
             var slot = _context.BookingSlots.FirstOrDefault(s => s.SlotId == SlotId);
 
-            if (slot != null)
-            {
-                    slot.SlotId, slot.SlotStartTime, slot.SlotEndTime);
-            }
-            else
-            {
-                return 0;
-            }
-
             var isSlotReserved = _context.Reservations.Any(r => r.SlotId == SlotId);
-
-
-            if (isSlotReserved)
-            {
-                return 0;
-            }
 
             var reservation = new Reservations
             {
@@ -100,5 +86,8 @@ namespace BowlingAlley
         {
             return _context.BookingSlots.ToList();
         }
+
+
+
     }
 }

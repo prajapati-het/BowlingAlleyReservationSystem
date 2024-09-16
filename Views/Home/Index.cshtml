@@ -2,7 +2,27 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="jumbotron text-center bg-light p-5" style=" background-size: cover; background-position: center; color: black;">
+    <strong><h1 class="display-4">Welcome to Bowling Alley!</h1>
+    <p class="lead">Book your slots, enjoy a great time, and compete with friends in the best bowling alley in town.</p>
+    <hr class="my-4" style="border-color: black;">
+        <p>Ready to play? Check out our available slots and book your spot now!</p>
+    </strong>
+    <a class="btn btn-primary btn-lg" href="@Url.Action("GetFreeSlots", "Member")" role="button">Book a Slot</a>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Why Choose Us?</h2>
+            <p>
+                At Bowling Alley, we provide a premium experience with state-of-the-art facilities, 
+                fun activities, and a friendly atmosphere. Whether you're a beginner or a pro, we have something 
+                for everyone. Our alley is open all week, with plenty of free slots to accommodate your busy schedule.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <img src="https://content.jdmagicbox.com/comp/ahmedabad/x3/079pxx79.xx79.120613184830.w6x3/catalogue/patel-amusement-raipur-ahmedabad-bowling-alleys-1raxpfnmek.jpg" class="img-fluid rounded" alt="Bowling Experience">
+        </div>
+    </div>
 </div>

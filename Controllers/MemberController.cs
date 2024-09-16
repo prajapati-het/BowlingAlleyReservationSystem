@@ -59,6 +59,12 @@ namespace BowlingAlley.Controllers
             }
         }
 
+        public IActionResult RejectedSlots()
+        {
+
+            return View();
+        }
+
 
 
         public IActionResult Success()
