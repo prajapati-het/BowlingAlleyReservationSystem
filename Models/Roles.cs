@@ -13,6 +13,8 @@ namespace BowlingAlley.Models
         public string EmpName { get; set; }
         public bool RoleType { get; set; }
 
+        public string Password { get; set; }
+
         public ICollection<Reservations> Reservations { get; set; }
     }
 }

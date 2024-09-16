@@ -78,6 +78,12 @@ namespace BowlingAlley.Models
                       .HasForeignKey(r => r.ReservedBy)
                       .OnDelete(DeleteBehavior.ClientSetNull)
                       .HasConstraintName("FK_Reservations_Roles");
+
+                entity.Property(e => e.Password)
+                      .IsRequired()
+                      .HasMaxLength(10)
+                      .HasDefaultValue("1478523690");
+
             });
         }
 
