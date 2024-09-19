@@ -18,7 +18,7 @@
             @foreach (var slot in Model)
             {
                 { 
-                    if (slot.SlotEndTime > DateTime.Now.TimeOfDay)
+                    if (slot.SlotEndTime > DateTime.Now.TimeOfDay || slot.SlotEndTime < Model.Last().SlotEndTime)
                     {
                         <tr>
                             <td>@slot.SlotId</td>
@@ -28,7 +28,8 @@
                                 <a href="@Url.Action("BookSlots", "Member", new { SlotId = slot.SlotId })" class="btn btn-link">Book Slot</a>
                             </td>
                         </tr>
-                    } 
+                    }
+                    
                 }
 
             }

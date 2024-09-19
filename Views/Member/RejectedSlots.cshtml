@@ -1,0 +1,30 @@
+﻿@model List<BowlingAlley.Models.RejectedSlots>
+
+<div class="container">
+    <h2>Rejected Slots</h2>
+    <p>Type of User: <strong>Member</strong></p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>SlotId</th>
+                <th>Employee Name</th>
+                <th>Reservation Date</th>
+                <th>Slot Start Time</th>
+                <th>Slot End Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rejectedSlot in Model)
+            {
+                <tr>
+                    <td>@rejectedSlot.SlotId</td>
+                    <td>@rejectedSlot.EmpName</td>
+                    <td>@rejectedSlot.ReservedOn.ToString("dd/MM/yyyy")</td>
+                    <td>@rejectedSlot.SlotStartTime.ToString(@"hh\:mm")</td>  <!-- Format for TimeSpan -->
+                    <td>@rejectedSlot.SlotEndTime.ToString(@"hh\:mm")</td>    <!-- Format for TimeSpan -->
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

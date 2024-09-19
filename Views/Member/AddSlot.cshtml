@@ -1,0 +1,21 @@
+﻿@model BowlingAlley.Models.BookingSlots
+
+<h2>Add Your New Slot</h2>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style="color: red;">@ViewBag.ErrorMessage</p>
+}
+
+<form asp-action="AddSlot" method="post">
+    <div>
+        <label>Slot Start Time (hh:mm:ss)</label>
+        <input type="text" name="SST" required />
+    </div>
+    <div>
+        <label>Slot End Time (hh:mm:ss)</label>
+        <input type="text" name="SET" required />
+    </div>
+
+    <button type="submit">Add Slot</button>
+</form>

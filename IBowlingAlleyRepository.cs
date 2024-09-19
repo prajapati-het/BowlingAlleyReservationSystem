@@ -8,7 +8,15 @@ namespace BowlingAlley
     {
         public int BookSlots(int Slotid, int Empid, string CustomerName);
 
-        //public     GetRejectedSlots();
+        public void AddRejectedSlot(int reservationId, int empId);
+
+        public Roles GetRoleByEmpId(int empId);
+
+        public List<RejectedSlots> GetRejectedSlots(DateTime date, int slotid);
+
+        public void AddSlot(TimeSpan st, TimeSpan et);
+
+        public void DeleteSlot(int SlotId);
 
         public string GetAdminName(int role);
 

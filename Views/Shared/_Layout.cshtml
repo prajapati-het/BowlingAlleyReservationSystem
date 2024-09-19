@@ -15,7 +15,13 @@
                     <a class="nav-link text-white" href="@Url.Action("GetFreeSlots", "Member")">Free Slots</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="@Url.Action("GetFreeSlots", "Member")">Rejected Slots</a>
+                    <a href="@Url.Action("RejectedSlots", "Member", new { date = DateTime.Today, slotId = 1 })" class="nav-link text-white">Rejected Slots</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="@Url.Action("AddSlot", "Member")">Add Slot</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="@Url.Action("ManageSlots", "Member")">Manage Slot</a>
                 </li>
             </ul>
         </div>

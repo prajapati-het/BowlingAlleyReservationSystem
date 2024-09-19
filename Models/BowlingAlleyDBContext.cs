@@ -19,6 +19,12 @@ namespace BowlingAlley.Models
         public  DbSet<Reservations> Reservations { get; set; }
         public  DbSet<Roles> Roles { get; set; }
 
+        //public DbSet<RejectedSlotsViewModel> RejectedSlots { get; set; }
+
+        public DbSet<RejectedSlots> RejectedSlots { get; set; }
+
+        public DbSet<ReservationRejections> ReservationRejections { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             /*if (!optionsBuilder.IsConfigured)
@@ -84,8 +90,28 @@ namespace BowlingAlley.Models
                       .HasMaxLength(10)
                       .HasDefaultValue("1478523690");
 
-            });
+            }
+            );
+
+            modelBuilder.Entity<ReservationRejections>()
+        .HasKey(rr => new { rr.ReservationId, rr.EmpId });
+
+            modelBuilder.Entity<ReservationRejections>()
+                .HasOne(rr => rr.Reservation)
+                .WithMany(r => r.ReservationRejections)
+                .HasForeignKey(rr => rr.ReservationId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReservationRejections_Reservations");
+
+            modelBuilder.Entity<ReservationRejections>()
+                .HasOne(rr => rr.Role)
+                .WithMany(e => e.ReservationRejections)
+                .HasForeignKey(rr => rr.EmpId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReservationRejections_Roles");
         }
 
     }
+
+    
 }

@@ -2,6 +2,7 @@
 using BowlingAlley.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BowlingAlley.Controllers
 {
@@ -35,23 +36,72 @@ namespace BowlingAlley.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConfirmBooking(int SlotId, int EmpId, string CustomerName)
+        public IActionResult ConfirmBooking(int SlotId, string CustomerName, int EmpId)
         {
-            if (EmpId == 0 || string.IsNullOrEmpty(CustomerName))
-            {
-                return RedirectToAction("Exception");
-            }
+            var existingReservation = _bowlingAlleyRepository.GetReservations()
+                .FirstOrDefault(r => r.SlotId == SlotId && r.Status == 1);
 
+            var employeeRole = _bowlingAlleyRepository.GetRoleByEmpId(existingReservation.ReservedBy);
+            
+
+            var bookedSlot = _bowlingAlleyRepository.GetBookingSlots().FirstOrDefault(s => s.SlotId == SlotId);
+
+            if (existingReservation != null)
+            {
+                var rejectedSlot = new RejectedSlots()
+                {
+                    EmpName = employeeRole.EmpName,
+                    ReservationId = existingReservation.ReservationId,
+                    ReservedOn = existingReservation.ReservedOn,
+                    SlotEndTime = bookedSlot.SlotEndTime,
+                    SlotId = bookedSlot.SlotId,
+                    SlotStartTime = bookedSlot.SlotStartTime,
+                };
+
+                _bowlingAlleyRepository.AddRejectedSlot(existingReservation.ReservationId, EmpId);
+
+                return RedirectToAction("RejectedSlots", new { date = existingReservation.ReservedOn, slotId = SlotId });
+            }
+            else
+            {
+                return RedirectToAction("Success");
+            }
+        }
+
+
+        public IActionResult RejectedSlots(DateTime date, int slotId)
+        {
+            var rejectedSlots = _bowlingAlleyRepository.GetRejectedSlots(date, slotId);
+            return View(rejectedSlots);
+        }
+
+
+        [HttpGet]
+        public IActionResult AddSlot()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddSlot(string SST, string SET)
+        {
             try
             {
-                int reservationId = _bowlingAlleyRepository.BookSlots(SlotId, EmpId, CustomerName);
+                TimeSpan startTime = TimeSpan.Parse(SST);
+                TimeSpan endTime = TimeSpan.Parse(SET);
 
-                if (reservationId > 0)
+                var existingSlot = _bowlingAlleyRepository.GetBookingSlots()
+                    .FirstOrDefault(s => s.SlotStartTime == startTime && s.SlotEndTime == endTime);
+
+                if (existingSlot != null)
                 {
-                    return RedirectToAction("Success");
+                    ViewBag.ErrorMessage = "This slot already exists.";
+                    return View();
                 }
 
-                return RedirectToAction("Exception");
+                _bowlingAlleyRepository.AddSlot(startTime, endTime);
+
+                return RedirectToAction("Success");
             }
             catch (Exception ex)
             {
@@ -59,12 +109,35 @@ namespace BowlingAlley.Controllers
             }
         }
 
-        public IActionResult RejectedSlots()
+        [HttpPost]
+        public IActionResult DeleteSlot(int SlotId)
         {
+            try
+            {
+                var slot = _bowlingAlleyRepository.GetBookingSlots().FirstOrDefault(s => s.SlotId == SlotId);
 
-            return View();
+                if (slot == null)
+                {
+                    ViewBag.ErrorMessage = "Slot not found.";
+                    return View();
+                }
+
+                _bowlingAlleyRepository.DeleteSlot(SlotId);
+
+                return RedirectToAction("Success");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Exception");
+            }
         }
 
+        [HttpGet]
+        public IActionResult ManageSlots()
+        {
+            var slots = _bowlingAlleyRepository.GetBookingSlots();
+            return View(slots);
+        }
 
 
         public IActionResult Success()

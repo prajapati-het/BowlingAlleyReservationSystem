@@ -1,4 +1,5 @@
 using BowlingAlley.Models;
+using BowlingAlley.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ namespace BowlingAlley
             services.AddDbContext<BowlingAlleyDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("BowlingAlleyDBConnectionString")));
             services.AddLogging();
+            services.AddHostedService<SlotCleanerService>();
 
         }
 
