@@ -69,20 +69,11 @@ The `BowlingAlleyRepository` class provides the following methods:
 - **ApproveOrReject**  
   Updates the reservation status in the `Reservation` table.
   
-- **BookSlots**  
-  Adds new reservation details using the stored procedure `usp_BookSlots`.
-  
-- **GetAllRejectedSlots**  
-  Fetches all rejected slot details using the function `ufn_FetchAllRejectedSlots`.
-  
 - **GetFreeSlots**  
   Retrieves all available slots for the current day.
   
 - **GetReservedSlots**  
   Gets reserved slot details for the current day.
-  
-- **GetAdminName**  
-  Fetches the admin's name using the function `ufn_GetAdminName`.
 
 ## Presentation Layer Implementation
 
