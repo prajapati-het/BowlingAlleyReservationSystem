@@ -41,13 +41,15 @@ namespace BowlingAlley.Controllers
             var existingReservation = _bowlingAlleyRepository.GetReservations()
                 .FirstOrDefault(r => r.SlotId == SlotId && r.Status == 1);
 
-            var employeeRole = _bowlingAlleyRepository.GetRoleByEmpId(existingReservation.ReservedBy);
             
-
-            var bookedSlot = _bowlingAlleyRepository.GetBookingSlots().FirstOrDefault(s => s.SlotId == SlotId);
 
             if (existingReservation != null)
             {
+                var employeeRole = _bowlingAlleyRepository.GetRoleByEmpId(existingReservation.ReservedBy);
+
+
+                var bookedSlot = _bowlingAlleyRepository.GetBookingSlots().FirstOrDefault(s => s.SlotId == SlotId);
+
                 var rejectedSlot = new RejectedSlots()
                 {
                     EmpName = employeeRole.EmpName,
@@ -64,6 +66,8 @@ namespace BowlingAlley.Controllers
             }
             else
             {
+                _bowlingAlleyRepository.BookSlots(SlotId, EmpId, CustomerName);
+
                 return RedirectToAction("Success");
             }
         }

@@ -100,12 +100,13 @@ namespace BowlingAlley
                     EmpId = empId
                 };
 
+                //_context.ReservationRejections.Add(reservationRejection);
                 _context.ReservationRejections.Add(reservationRejection);
 
                 
                 var rejectedSlot = new RejectedSlots
                 {
-                    ReservationId = reservation.ReservationId,
+                    ReservationId = reservationId,
                     ReservedOn = reservation.ReservedOn,
                     SlotId = reservation.SlotId,
                     SlotStartTime = reservation.Slot.SlotStartTime, 
@@ -115,14 +116,14 @@ namespace BowlingAlley
 
                 _context.RejectedSlots.Add(rejectedSlot);
 
-                try
-                {
+               // try
+               // {
                     _context.SaveChanges();
-                }
-                catch(Exception ex)
-                {
-
-                }
+               // }
+                //catch(Exception ex)
+                //{
+                  //  throw new Exception("Reservation not found.");
+                //}
             }
             else
             {
